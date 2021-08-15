@@ -1,0 +1,62 @@
+<h2>友達情報</h2>
+<div class="container">
+  <div class="row">
+    <div class = "col-sm-2">名前 : <%= @user.name %></div>
+    <div class = "col-sm-6">メールアドレス : <%= @user.email %></div>
+    <div class = "col-sm-4"></div>
+    <div class = "col-sm-6">プロフィール : <%= @user.profile %></div>
+    <% if current_user.id == @user.id %>
+      <%= link_to "編集する", edit_user_registration_path %>
+    <% end %>
+  </div>
+</div>
+
+<h2>ユーザーの投稿一覧</h2>
+<div class="container">
+  <div class="row">
+    <% @user.posts.each do |t| %>
+      <div class="col-sm-4 box">
+        <div class="card" style="width: 255px; ">
+          <div class="card-img-top">
+            <%= image_tag t.image_url, size: "250x200"  %>
+          </div>
+          <div class="card-body">
+            <div class="card-text">
+              <%= t.user.name %>
+              <%= t.post %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <% if @user.id == current_user.id %>
+    <% else %>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+      <% if @isRoom == true %>
+        <p><a href="/rooms/<%= @roomId %>">チャットへ</a>
+      <% else %>
+        <%= form_for @room do |f| %>
+          <%= fields_for @entry do |e| %>
+            <%= e.hidden_field :user_id, :value=> @user.id %>
+          <% end %>
+          <%= f.submit "チャットを始める" %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<h2>ユーザーがいいねした投稿一覧</h2>
+<div class="container">
+  <div class="row">
+    <% @user.liked_posts.each do |t| %>
+      <%= t.user.name %>
+      <%= t.post %>
+    <% end %>
+    <!-- ここまで-->
+  <div>
+  <%= link_to "投稿一覧に戻る", posts_path %>
+</div>

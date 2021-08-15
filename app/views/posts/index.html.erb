@@ -1,0 +1,57 @@
+<div class = "box1" >
+  <h3>投稿を検索</h3>
+  <div class="search">
+    <%= form_tag({controller:"posts",action:"index"}, method: :get) do %>
+    <%= text_field_tag :search %>
+    <%= submit_tag '検索する'  %>
+    <% end %>
+  </div>
+  <div class="kanta-container">
+    <h3 class="form-signin-heading">投稿一覧</h3>
+      <%= link_to "新規投稿へ", new_post_path %>
+      <% if user_signed_in? %>
+      <%= link_to "マイページへ", user_path(current_user.id) %>
+      <%= link_to "DMを送る", controller: 'users' %>
+      <% end %>
+  </div>
+  <div class="posts-container">
+    <div class="row" >
+      <% @posts.each do |t| %>
+        <div class="col-sm-4 box">
+          <div class="card" style="width: 255px; ">
+            <div class="card-img-top">
+              <%= image_tag t.image_url, size: "250x200"  %>
+            </div>
+            <div class="card-body">
+              <p class="card-text">
+                <a href="/users/<%= t.user.id %>"><%= t.user.name %></a>
+                <p><%= t.post %></p>
+              </p>
+              <p><% if user_signed_in? %></p>
+                <% if current_user.already_liked?(t) %>
+                  <%= link_to post_like_path(id: t.id, post_id: t.id), method: :delete do %>
+                  <i class="fas fa-heart"></i><%= t.likes.count %>
+                <% end %>
+                <% else %>
+                  <%= link_to post_likes_path(id: t.id, post_id: t.id), method: :post do %>
+                  <i class="far fa-heart"></i><%= t.likes.count %>
+                <% end %>
+              <% end %>
+              <% else %>
+                <i class="far fa-heart"></i><%= t.likes.count %>
+              <% end %>
+              <%= link_to "To details", post_path(t.id), class: "link" %>
+              <% if user_signed_in? && current_user.id == t.user_id %>
+                <%= link_to "Try to edit", edit_post_path(t.id), class: "link" %>
+                <%= button_to "Delete", post_path(t.id), method: :delete %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>   
+    </div>
+  </div>
+</div>
+<%= button_to 'ログアウト', destroy_user_session_path, method: :delete %>
+
+

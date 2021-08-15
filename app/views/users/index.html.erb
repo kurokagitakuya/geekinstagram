@@ -1,0 +1,22 @@
+<div class = kanta2 >
+  <% if user_signed_in? %>
+  <h2> <%= current_user.email %>さんの友達</h2>
+  
+  <div class="container">
+    <div class="row">
+      <div class="col-sm">
+        <% @users.each do |u| %>
+        <a href="/users/<%= u.id %>"><%= u.email %>さん</a>
+        <hr>
+      <% end %>
+      <%= link_to "投稿一覧へ", controller: 'posts' %>
+      <%= link_to "ログアウト", destroy_user_session_path, :method => :delete %>
+      </div>
+    <% else %>
+      <%= link_to "ユーザーを登録する", new_user_registration_path %>
+      <br>
+      <%= link_to "ログインする", new_user_session_path %>
+    <% end %>
+    </div>
+  </div>
+</div>

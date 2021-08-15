@@ -1,0 +1,14 @@
+
+<h3>新規投稿</h3>
+<%= form_for @post do |f| %>
+  <div class="field">
+    <%= f.label :post %>
+    <%= f.text_field :post, :size => 140 %>
+  </div>
+  <div class="field">
+    <%= f.label :image %>
+    <%= f.file_field :image %>
+  </div>
+  <%= f.submit "投稿する" %>
+<% end %>
+<%= link_to "投稿一覧に戻る", root_path %>
